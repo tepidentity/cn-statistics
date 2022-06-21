@@ -1,0 +1,9 @@
+# HTTP Server
+server:
+  port: 8761
+
+# Cloud
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
