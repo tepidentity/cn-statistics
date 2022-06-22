@@ -38,6 +38,6 @@ public class CountryStatisticsServiceImpl implements CountryStatisticsService {
         Statistics statistics = statisticsRepository.findByCountryIdAndMaxDate(country.getId())
                 .orElseGet(Statistics::new);
 
-        return countryMapper.toStatisticsDto(country, statistics);
+        return countryMapper.toCountrySummaryDto(country, statistics);
     }
 }

@@ -1,14 +1,12 @@
 package org.example.data.source.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,28 @@ public class MQConfiguration {
     public MQConfiguration(MQProperties mqProperties) {
 
         this.mqProperties = mqProperties;
+    }
+
+    @Bean
+    MQProperties amqpProperties() {
+
+        return mqProperties;
+    }
+
+    @Bean
+    ObjectMapper objectMapper() {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        return mapper;
+    }
+
+    @Bean
+    MessageConverter messageConverter(ObjectMapper objectMapper) {
+
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     @Bean
@@ -45,27 +65,4 @@ public class MQConfiguration {
                 .to(exchange)
                 .with(mqProperties.getRoutingKey());
     }
-
-    @Bean
-    ObjectMapper objectMapper() {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-        return mapper;
-    }
-
-    @Bean
-    MessageConverter messageConverter(ObjectMapper objectMapper) {
-
-        return new Jackson2JsonMessageConverter(objectMapper);
-    }
-
-    @Bean
-    MQProperties amqpProperties() {
-
-        return mqProperties;
-    }
-
-
 }
