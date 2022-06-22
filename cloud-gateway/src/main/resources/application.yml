@@ -7,7 +7,19 @@ spring:
         - id: STATISTICS
           uri: lb://STATISTICS
           predicates:
-            - Path=/statistics/**
+            - Path=/country/*
+          filter:
+            - name: CircuitBreaker
+              args:
+                name: STATISTICS
+                fallbackuri: foreward:/countryStatisticsFallBack
+
+hystrix:
+  command:
+    execution:
+      isolation:
+        thread:
+          timeoutInMilliseconds: 4000
 
 # HTTP Server
 server:

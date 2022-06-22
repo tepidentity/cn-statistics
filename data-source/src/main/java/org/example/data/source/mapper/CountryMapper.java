@@ -13,5 +13,5 @@ public interface CountryMapper {
     @Mapping(source = "country.code", target = "countryCode")
     @Mapping(source = "country.slug", target = "slug")
     @Mapping(source = "statistics", target = "statistics")
-    CountrySummaryDto toStatisticsDto(Country country, Statistics statistics);
+    CountrySummaryDto toCountrySummaryDto(Country country, Statistics statistics);
 }

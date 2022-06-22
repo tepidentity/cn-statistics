@@ -17,6 +17,6 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Long> {
 
     @Query(value = "SELECT s FROM Statistics s" +
             " WHERE s.country.id = :countryId" +
-            " AND s.date = ( SELECT MAX(in.date) FROM Statistics in WHERE in.country.id = :countryId ) ")
+            " AND s.date = (SELECT MAX(ss.date) FROM Statistics ss WHERE ss.country.id = :countryId)")
     Optional<Statistics> findByCountryIdAndMaxDate(@Param("countryId") Long countryId);
 }
