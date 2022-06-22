@@ -1,5 +1,7 @@
-package org.example.data.scrapper.configuration;
+package org.example.data.source.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -45,17 +47,25 @@ public class MQConfiguration {
     }
 
     @Bean
-    MessageConverter messageConverter() {
+    ObjectMapper objectMapper() {
 
-        return new Jackson2JsonMessageConverter();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        return mapper;
     }
 
     @Bean
-    AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+    MessageConverter messageConverter(ObjectMapper objectMapper) {
 
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(messageConverter);
-
-        return template;
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
+
+    @Bean
+    MQProperties amqpProperties() {
+
+        return mqProperties;
+    }
+
+
 }

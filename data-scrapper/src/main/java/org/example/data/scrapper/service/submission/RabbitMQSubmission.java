@@ -1,9 +1,10 @@
-package org.example.data.scrapper.service;
+package org.example.data.scrapper.service.submission;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.data.scrapper.configuration.MQProperties;
 import org.example.data.scrapper.dto.Data;
-import org.example.data.scrapper.dto.Entry;
+import org.example.data.scrapper.mapper.CountryMapper;
+import org.example.data.scrapper.service.DataSubmission;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,12 +17,14 @@ public class RabbitMQSubmission implements DataSubmission {
 
     private final RabbitTemplate template;
     private final MQProperties mqProperties;
+    private final CountryMapper countryMapper;
 
     @Autowired
-    public RabbitMQSubmission(RabbitTemplate template, MQProperties mqProperties) {
+    public RabbitMQSubmission(RabbitTemplate template, MQProperties mqProperties, CountryMapper countryMapper) {
 
         this.template = template;
         this.mqProperties = mqProperties;
+        this.countryMapper = countryMapper;
     }
 
     @Override
@@ -32,7 +35,8 @@ public class RabbitMQSubmission implements DataSubmission {
 
         log.info("Submitting data entries...");
         try {
-            data.getEntries().forEach(this::publishEntry);
+
+            data.getEntries().forEach(entry -> publish(countryMapper.toSubmission(entry, data.getDate())));
 
         } catch (Exception ex) {
 
@@ -43,8 +47,8 @@ public class RabbitMQSubmission implements DataSubmission {
         log.info("Submitted all data entries without errors...");
     }
 
-    private void publishEntry(Entry entry) {
+    private <T> void publish(T submission) {
 
-        template.convertAndSend(mqProperties.getExchange(), mqProperties.getRoutingKey(), entry);
+        template.convertAndSend(mqProperties.getExchange(), mqProperties.getRoutingKey(), submission);
     }
 }

@@ -16,4 +16,7 @@ public class Data {
 
     @JsonProperty("Countries")
     private List<Entry> entries = new ArrayList<>();
+
+    @JsonProperty("Date")
+    private String date;
 }
