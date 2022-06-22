@@ -38,7 +38,4 @@ public class Entry {
 
     @JsonProperty("TotalRecovered")
     private long totalRecovered;
-
-    @JsonProperty("Date")
-    private String date;
 }
