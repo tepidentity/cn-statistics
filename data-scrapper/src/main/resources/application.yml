@@ -1,0 +1,22 @@
+scrape:
+  url: https://api.covid19api.com/summary
+  cron: 0 11 0 * * ?
+
+# messaging
+spring:
+  rabbitmq:
+    address: localhost
+    port: 5672
+    password: guest
+    username: guest
+
+messaging:
+  queue: queue
+  exchange: exchange
+  routingKey: routing_key
+
+logging:
+  level:
+    org:
+      springframework:
+        amqp: TRACE
