@@ -51,7 +51,7 @@ public class Statistics {
     @Column(name = "total_recovered")
     private long totalRecovered;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private Instant date;
 
     @ManyToOne(fetch = FetchType.LAZY)
