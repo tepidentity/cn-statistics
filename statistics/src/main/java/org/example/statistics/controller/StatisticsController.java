@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Pattern;
+
 @RestController
 @RequestMapping("/country")
 public class StatisticsController {
@@ -22,7 +24,7 @@ public class StatisticsController {
     }
 
     @GetMapping("/{countryCode}")
-    public ResponseEntity<CountrySummaryDto> getSummary(@PathVariable String countryCode) {
+    public ResponseEntity<CountrySummaryDto> getSummary(@PathVariable @Pattern(regexp = "^[A-Z]{2}$") String countryCode) {
 
         return ResponseEntity.ok(statisticsClient.getSummary(countryCode));
     }

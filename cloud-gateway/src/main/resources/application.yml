@@ -4,8 +4,8 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: STATISTICS
-          uri: lb://STATISTICS
+        - id: STATISTICS-SERVICE
+          uri: lb://STATISTICS-SERVICE
           predicates:
             - Path=/country/*
           filter:
