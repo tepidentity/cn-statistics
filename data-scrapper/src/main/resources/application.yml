@@ -5,7 +5,7 @@ scrape:
 # messaging
 spring:
   rabbitmq:
-    address: localhost
+    host: localhost
     port: 5672
     password: guest
     username: guest
@@ -14,9 +14,3 @@ messaging:
   queue: queue
   exchange: exchange
   routingKey: routing_key
-
-logging:
-  level:
-    org:
-      springframework:
-        amqp: TRACE

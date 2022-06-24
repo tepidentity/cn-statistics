@@ -1,6 +1,6 @@
 spring:
   application:
-    name: DATA-SOURCE
+    name: DATA-SOURCE-SERVICE
 
   datasource:
     url: jdbc:h2:mem:dev
@@ -8,14 +8,20 @@ spring:
     console.enabled: true
 
   rabbitmq:
-    address: localhost
+    host: localhost
     port: 5672
     password: guest
     username: guest
 
+# messaging
+messaging:
+  queue: queue
+  exchange: exchange
+  routingKey: routing_key
+
 # HTTP
 server:
-  port: 8082
+  port: 8081
 
 # Cloud
 eureka:
@@ -28,15 +34,9 @@ feign:
   client:
     config:
       default:
-        connectTimeout: 5000
-        readTimeout: 5000
+        connectTimeout: 2000
+        readTimeout: 2000
         loggerLevel: basic
-
-# messaging
-messaging:
-  queue: queue
-  exchange: exchange
-  routingKey: routing_key
 
 # Swagger
 springdoc.swagger-ui.path: "swagger.html"
