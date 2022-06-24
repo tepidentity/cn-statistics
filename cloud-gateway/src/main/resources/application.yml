@@ -8,27 +8,32 @@ spring:
           uri: lb://STATISTICS-SERVICE
           predicates:
             - Path=/country/*
-          filter:
+          filters:
             - name: CircuitBreaker
               args:
-                name: STATISTICS
-                fallbackuri: foreward:/countryStatisticsFallBack
+                name: STATISTICS-SERVICE
+                fallbackuri: forward:/statisticsFallBack
 
-hystrix:
-  command:
-    execution:
-      isolation:
-        thread:
-          timeoutInMilliseconds: 2000
+#hystrix:
+#  command:
+#    execution:
+#      isolation:
+#        thread:
+#          timeoutInMilliseconds: 2000
 
 # HTTP Server
 server:
   port: 8080
 
 # Cloud
+cloud:
+  registry:
+    url: localhost
+    port: 8761
+
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://${cloud.registry.url}:${cloud.registry.port}/eureka/

@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+  cloud-registry:
+    build: ./cloud-registry
+    ports:
+      - '8761:8761'
+
+  cloud-gateway:
+    build: ./cloud-gateway
+    ports:
+      - '8080:8080'
+
+  data-store-service:
+    build: ./data-store
+    ports:
+      - '8081:8081'
+    depends_on:
+      - cloud-registry
+      - rabbitmq
+
+  statistics-service:
+    build: ./statistics
+    ports:
+      - '8082:8082'
+    depends_on:
+      - cloud-registry
+
+  data-scrapper:
+    build: ./data-scrapper
+    depends_on:
+      - rabbitmq

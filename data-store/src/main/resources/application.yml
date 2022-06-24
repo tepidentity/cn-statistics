@@ -1,11 +1,27 @@
-# Spring properties
 spring:
   application:
-    name: STATISTICS-SERVICE
+    name: DATA-STORE-SERVICE
+
+  datasource:
+    url: jdbc:h2:mem:dev
+  h2.console:
+    enabled: true
+
+  rabbitmq:
+    addresses: localhost
+    port: 5672
+    password: guest
+    username: guest
+
+# messaging
+messaging:
+  queue: queue
+  exchange: exchange
+  routingKey: routing_key
 
 # HTTP
 server:
-  port: 8082
+  port: 8081
 
 # Cloud
 cloud:
@@ -26,6 +42,7 @@ feign:
       default:
         connectTimeout: 2000
         readTimeout: 2000
+        loggerLevel: basic
 
 # Swagger
 springdoc.swagger-ui.path: "swagger.html"

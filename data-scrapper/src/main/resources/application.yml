@@ -5,7 +5,7 @@ scrape:
 # messaging
 spring:
   rabbitmq:
-    host: localhost
+    addresses: localhost
     port: 5672
     password: guest
     username: guest

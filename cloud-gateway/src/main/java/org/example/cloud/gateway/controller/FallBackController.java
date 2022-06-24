@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FallBackController {
 
-    @GetMapping("/country/*")
-    public String countryStatisticsFallBack() {
+    @GetMapping("/statisticsFallBack")
+    public String statisticsFallBack() {
 
         return "Statistics service is currently unavailable!";
     }
