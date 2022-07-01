@@ -1,0 +1,6 @@
+spring:
+  rabbitmq.addresses: rabbitmq
+  h2.console:
+    settings.web-allow-others: true
+
+cloud.registry.url: cloud-registry
